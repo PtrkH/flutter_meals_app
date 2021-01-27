@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/models/meal.dart';
-import 'package:flutter_complete_guide/widgets/meal_item.dart';
 
 import '../dummy_data.dart';
+import '../models/meal.dart';
+import '../widgets/meal_item.dart';
 
 class CategoryMealsScreen extends StatefulWidget {
   static const routeName = '/category-meals';

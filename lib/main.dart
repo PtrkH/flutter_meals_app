@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/screens/filters_screen.dart';
-import 'package:flutter_complete_guide/screens/meal_detail._screen.dart';
-import 'package:flutter_complete_guide/screens/tabs_screen.dart';
+import 'screens/filters_screen.dart';
+import 'screens/meal_detail._screen.dart';
+import 'screens/tabs_screen.dart';
 
 import 'screens/category_meals_screen.dart';
 import 'screens/categories_screen.dart';
