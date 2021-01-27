@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/screens/filters_screen.dart';
 import 'package:flutter_complete_guide/screens/meal_detail._screen.dart';
+import 'package:flutter_complete_guide/screens/tabs_screen.dart';
 
 import 'screens/category_meals_screen.dart';
 import 'screens/categories_screen.dart';
@@ -32,9 +34,10 @@ class MyApp extends StatelessWidget {
       //home: CategoriesScreen(),
       initialRoute: '/', //default it '/'
       routes: {
-        '/': (ctx) => CategoriesScreen(),
+        '/': (ctx) => TabsScreen(),
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
         MealDetialScreen.routeName: (ctx) => MealDetialScreen(),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(),
       },
       //onGenerateRoute: (setting) { //if going to a PushNamed which is not registered in the routes (up here)
       //  print(setting.arguments);
