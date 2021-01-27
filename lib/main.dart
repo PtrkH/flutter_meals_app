@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dummy_data.dart';
+import 'models/meal.dart';
 import 'screens/filters_screen.dart';
 import 'screens/meal_detail._screen.dart';
 import 'screens/tabs_screen.dart';
@@ -8,7 +10,64 @@ import 'screens/categories_screen.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Map<String, bool> _filters = {
+    'gluten': false,
+    'lactose': false,
+    'vegan': false,
+    'vegetarian': false,
+  };
+  List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoritedMeals = [];
+
+  void _setFilters(Map<String, bool> filterData) {
+    setState(() {
+      _filters = filterData;
+
+      _availableMeals = DUMMY_MEALS.where((meal) {
+        if (_filters['gluten'] && !meal.isGlutenFree) {
+          return false;
+        }
+        if (_filters['vegan'] && !meal.isVegan) {
+          return false;
+        }
+        if (_filters['vegetarian'] && !meal.isVegetarian) {
+          return false;
+        }
+        if (_filters['lactose'] && !meal.isLactoseFree) {
+          return false;
+        }
+        return true;
+      }).toList();
+    });
+  }
+
+  void _toggleFavorite(String mealId) {
+    final existingIndex =
+        _favoritedMeals.indexWhere((meal) => meal.id == mealId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoritedMeals.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favoritedMeals.add(
+          DUMMY_MEALS.firstWhere((meal) => meal.id == mealId),
+        );
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoritedMeals.any((meal) => meal.id == id);
+    // if any element returns true
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,10 +93,12 @@ class MyApp extends StatelessWidget {
       //home: CategoriesScreen(),
       initialRoute: '/', //default it '/'
       routes: {
-        '/': (ctx) => TabsScreen(),
-        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
-        MealDetialScreen.routeName: (ctx) => MealDetialScreen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(),
+        '/': (ctx) => TabsScreen(_favoritedMeals),
+        CategoryMealsScreen.routeName: (ctx) =>
+            CategoryMealsScreen(_availableMeals),
+        MealDetialScreen.routeName: (ctx) =>
+            MealDetialScreen(_isMealFavorite, _toggleFavorite),
+        FiltersScreen.routeName: (ctx) => FiltersScreen(_filters, _setFilters),
       },
       //onGenerateRoute: (setting) { //if going to a PushNamed which is not registered in the routes (up here)
       //  print(setting.arguments);
